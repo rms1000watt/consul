@@ -1,0 +1,15 @@
+{
+  "log_level": "DEBUG",
+  "data_dir": "/consul/data",
+  "datacenter": "dc-1",
+  "server": true,
+  "ui": true,
+  "bootstrap_expect": 3,
+  "addresses": {
+    "http": "0.0.0.0"
+  },
+  "retry_join": ["consul-server-1", "consul-server-2", "consul-server-3"],
+  "ports": {
+    "dns": 8600
+  }
+}

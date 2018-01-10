@@ -1,0 +1,67 @@
+version: '3'
+services:
+  consul-server-1:
+    container_name: consul-server-1
+    command: consul agent -config-file /server.json -bind 0.0.0.0
+    image: consul:1.0.2
+    ports:
+    - 8500:8500
+    - 8600:8600
+    volumes:
+    - ./server.json:/server.json
+  
+  consul-server-2:
+    container_name: consul-server-2
+    command: consul agent -config-file /server.json -bind 0.0.0.0
+    image: consul:1.0.2
+    volumes:
+    - ./server.json:/server.json
+  
+  consul-server-3:
+    container_name: consul-server-3
+    command: consul agent -config-file /server.json -bind 0.0.0.0
+    image: consul:1.0.2
+    volumes:
+    - ./server.json:/server.json
+  
+  consul-client-1:
+    container_name: consul-client-1
+    command: consul agent -config-file /client.json -bind 0.0.0.0
+    image: consul:1.0.2
+    volumes:
+    - ./client.json:/client.json
+
+  consul-client-2:
+    container_name: consul-client-2
+    command: consul agent -config-file /client.json -bind 0.0.0.0
+    image: consul:1.0.2
+    volumes:
+    - ./client.json:/client.json
+
+  consul-client-3:
+    container_name: consul-client-3
+    command: consul agent -config-file /client.json -bind 0.0.0.0
+    image: consul:1.0.2
+    volumes:
+    - ./client.json:/client.json
+
+  registrator:
+    container_name: registrator
+    command: consul://consul-server-1:8500
+    image: gliderlabs/registrator:master
+    restart: always
+    volumes:
+    - /var/run/docker.sock:/tmp/docker.sock
+
+  dummy-golang-project:
+    container_name: dummy-golang-project
+    image: rms1000watt/dummy-golang-project:latest
+    ports:
+    - 9999:9999
+
+  dummy-nodejs-project:
+    container_name: dummy-nodejs-project
+    image: rms1000watt/dummy-nodejs-project:latest
+    ports:
+    - 3000:3000
+  
